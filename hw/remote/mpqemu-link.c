@@ -51,6 +51,8 @@ bool mpqemu_msg_send(MPQemuMsg *msg, QIOChannel *ioc, Error **errp)
         fds = msg->fds;
     }
 
+    trace_mpqemu_msg_send(msg->cmd, msg->size, nfds);
+
     /*
      * Dont use in IOThread out of co-routine context as
      * it will block IOThread.
@@ -152,6 +154,8 @@ bool mpqemu_msg_recv(MPQemuMsg *msg, QIOChannel *ioc, Error **errp)
         error_setg(errp, "Unable to read full message");
         goto fail;
     }
+
+    trace_mpqemu_msg_recv(msg->cmd, msg->size, nfds);
 
 copy_fds:
     msg->num_fds = nfds;
