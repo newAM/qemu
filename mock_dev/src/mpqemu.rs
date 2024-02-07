@@ -54,9 +54,9 @@ pub const SYNC_SYSMEM_SIZE: usize = size_of::<SyncSysmemMsg>();
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default)]
 pub struct PciConfDataMsg {
-    addr: u32,
-    val: u32,
-    len: int,
+    pub addr: u32,
+    pub val: u32,
+    pub len: int,
 }
 
 pub const PCI_CONF_DATA_MSG_SIZE: usize = size_of::<PciConfDataMsg>();
@@ -66,8 +66,8 @@ pub const PCI_CONF_DATA_MSG_SIZE: usize = size_of::<PciConfDataMsg>();
 pub struct BarAccessMsg {
     addr: u64,
     val: u64,
-    size: unsigned,
-    memory: u8,
+    size: u32,
+    memory: u32,
 }
 
 #[repr(C)]

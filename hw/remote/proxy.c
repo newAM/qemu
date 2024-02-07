@@ -292,7 +292,7 @@ const MemoryRegionOps proxy_mr_ops = {
 static void probe_pci_info(PCIDevice *dev, Error **errp)
 {
     PCIDeviceClass *pc = PCI_DEVICE_GET_CLASS(dev);
-    uint32_t orig_val, new_val, base_class, val;
+    uint32_t base_class, val;
     PCIProxyDev *pdev = PCI_PROXY_DEV(dev);
     DeviceClass *dc = DEVICE_CLASS(pc);
     uint8_t type;
@@ -337,18 +337,22 @@ static void probe_pci_info(PCIDevice *dev, Error **errp)
     }
 
     for (i = 0; i < PCI_NUM_REGIONS; i++) {
-        config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &orig_val, 4,
-                       MPQEMU_CMD_PCI_CFGREAD);
-        new_val = 0xffffffff;
-        config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &new_val, 4,
-                       MPQEMU_CMD_PCI_CFGWRITE);
-        config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &new_val, 4,
-                       MPQEMU_CMD_PCI_CFGREAD);
-        size = (~(new_val & 0xFFFFFFF0)) + 1;
-        config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &orig_val, 4,
-                       MPQEMU_CMD_PCI_CFGWRITE);
-        type = (new_val & 0x1) ?
-                   PCI_BASE_ADDRESS_SPACE_IO : PCI_BASE_ADDRESS_SPACE_MEMORY;
+        // uint32_t orig_val, new_val;
+        // config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &orig_val, 4,
+        //                MPQEMU_CMD_PCI_CFGREAD);
+        // new_val = 0xffffffff;
+        // config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &new_val, 4,
+        //                MPQEMU_CMD_PCI_CFGWRITE);
+        // config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &new_val, 4,
+        //                MPQEMU_CMD_PCI_CFGREAD);
+        // size = (~(new_val & 0xFFFFFFF0)) + 1;
+        // config_op_send(pdev, PCI_BASE_ADDRESS_0 + (4 * i), &orig_val, 4,
+        //                MPQEMU_CMD_PCI_CFGWRITE);
+        // type = (new_val & 0x1) ?
+        //           PCI_BASE_ADDRESS_SPACE_IO : PCI_BASE_ADDRESS_SPACE_MEMORY;
+
+        size = 1024 * 1024;
+        type = PCI_BASE_ADDRESS_SPACE_MEMORY;
 
         if (size) {
             g_autofree char *name = g_strdup_printf("bar-region-%d", i);

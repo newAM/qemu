@@ -59,8 +59,8 @@ typedef struct {
 typedef struct {
     uint64_t addr;
     uint64_t val;
-    unsigned size;
-    uint8_t memory;
+    uint32_t size;
+    uint32_t memory;
 } BarAccessMsg;
 
 /**
