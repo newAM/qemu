@@ -45,9 +45,9 @@ typedef enum {
 } MPQemuCmd;
 
 typedef struct {
-    hwaddr gpas[REMOTE_MAX_FDS];
+    uint64_t gpas[REMOTE_MAX_FDS];
     uint64_t sizes[REMOTE_MAX_FDS];
-    off_t offsets[REMOTE_MAX_FDS];
+    int64_t offsets[REMOTE_MAX_FDS];
 } SyncSysmemMsg;
 
 typedef struct {
@@ -57,10 +57,10 @@ typedef struct {
 } PciConfDataMsg;
 
 typedef struct {
-    hwaddr addr;
+    uint64_t addr;
     uint64_t val;
     unsigned size;
-    bool memory;
+    uint8_t memory;
 } BarAccessMsg;
 
 /**
